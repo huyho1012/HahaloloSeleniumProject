@@ -1,7 +1,6 @@
 package PersonalWall;
 
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebDriver;
 
 import Common.Connection;
 import Common.Dummy;
@@ -18,19 +17,33 @@ public class Personal_Timeline extends Connection{
 	public void GotoPersonal() {
 		login = new LoginPage(driver);
 		login.Login("balo_04@mailinator.com", "123456");
-		postNormal = new PostPage(driver);
-		postNormal.CreatePost("cc");
 		try {
-			Thread.sleep(3000);
+			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		perWall.userLink.click();
-		if (perWall.contentPost.getText().equals(postDummy)){
-			perWall.menuPostAction.click();
-			perWall.delelePost.click();
-			perWall.btnConfirm.click();
+		postNormal = new PostPage(driver);
+		postNormal.CreatePost(postDummy);
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		driver.get(Connection.URL_PERSONAL);
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		String text = perWall.contentPost.getText();
+//		System.out.println(text);
+////		if (perWall.contentPost.getText().equals(postDummy)){
+////			perWall.menuPostAction.click();
+////			perWall.delelePost.click();
+////			perWall.btnConfirm.click();
+////		}
 	}
 }

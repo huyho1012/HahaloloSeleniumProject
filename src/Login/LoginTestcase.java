@@ -27,6 +27,12 @@ public class LoginTestcase extends Connection{
 		loginPage.Login("","");
 //		Assertions.assertEquals(expected, actual);
 	}
+
+	public void LoginWithBankInfo1() {
+		loginPage = new LoginPage(driver);
+		loginPage.Login("","");
+//		Assertions.assertEquals(expected, actual);
+	}
 		
 	
 }

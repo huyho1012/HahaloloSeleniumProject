@@ -10,14 +10,14 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 public class Connection {
 	protected WebDriver driver;
 	
-	String URL_Login = "https://test-newsfeed.hahalolo.com/auth/signin";
-	String URL_PersonalWall = "https://test-newsfeed.hahalolo.com/u/tester";
+	public static final String URL_LOGIN = "https://test-newsfeed.hahalolo.com/auth/signin";
+	public static final String URL_PERSONAL = "https://test-newsfeed.hahalolo.com/u/tester";
 	@BeforeEach
 	public void Connection() {
 		System.setProperty("webdriver.gecko.driver", "lib//geckodriver.exe");
 		driver = new FirefoxDriver();
-		driver.get(URL_Login);
-		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		driver.get(URL_LOGIN);
+		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 	}
 //	@AfterEach
 //	public void ClosePage() {
