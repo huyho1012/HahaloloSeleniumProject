@@ -24,5 +24,6 @@ public class PostPage {
 		createPostFunction.click();
 		formPostNormal.sendKeys(Content);
 		btnCreatePost.click();
+btnCreatePost.click();
 	}
 }
