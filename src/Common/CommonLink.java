@@ -1,5 +1,5 @@
 package Common;
 
 public class CommonLink {
-//hahaha
+//Update source to github
 }
