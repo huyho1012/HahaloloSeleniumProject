@@ -52,38 +52,47 @@ public class LoginTestcase extends Connection{
 	}
 	@Test
 	public void LoginWithEmailContainsWhitespaceOnBetween(){
+		loginPage = new LoginPage(driver);
 		loginPage.Login("huyh o1210@gmail.com","P@ssword");
 		Assertions.assertEquals(loginPage.GetErrMessage(),"Tài khoản không hợp lệ.");
 	}
 	@Test
 	public void LoginWithEmailContainsWhitespaceOnEnd() {
+		loginPage = new LoginPage(driver);
 		loginPage.Login("huyho1210@gmail.com ", "P@ssword");
 		Assertions.assertEquals(loginPage.GetErrMessage(), "Tài khoản không hợp lệ.");
 	}
 	@Test
 	public void LoginWithEmailContainsUpperCase(){
+		loginPage = new LoginPage(driver);
 		loginPage.Login("Huyho1210@gmail.com", "P@ssword");
 	}
 	@Test
 	public void LoginWithValidPhone(){
+		loginPage = new LoginPage(driver);
+		loginPage = new LoginPage(driver);
 		loginPage.Login("0936709449","123456a");
 	}
 	@Test
 	public void LoginWithInvalidPhoneFormat(){
+		loginPage = new LoginPage(driver);
 		loginPage.Login("0936709","123456a");
 		Assertions.assertEquals(loginPage.GetErrMessage(),"Tài khoản không hợp lệ.");
 	}
 	@Test
 	public void LoginWithPhoneContainsWhiteSpace(){
+		loginPage = new LoginPage(driver);
 		loginPage.Login("0936709449 ","123456a`");
 		Assertions.assertEquals(loginPage.GetErrMessage(),"Tài khoản không hợp lệ.");
 	}
 	@Ignore
 	public void LoginWithPhoneContainAreaPhoneCode(){
+		loginPage = new LoginPage(driver);
 		loginPage.Login("84936709449","123456a");
 	}
 	@Ignore
 	public void LoginWithPhoneNotContainsAreaPhoneCode(){
+		loginPage = new LoginPage(driver);
 		loginPage.Login("936709449","123456a");
 	}
 	@Test

@@ -6,18 +6,21 @@ import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 public class Connection {
 	protected WebDriver driver;
 	
-	public static final String URL_LOGIN = "https://test-newsfeed.hahalolo.com/auth/signin";
-	public static final String URL_PERSONAL = "https://test-newsfeed.hahalolo.com/u/tester";
 	@Before
 	public void Connection() {
 		System.setProperty("webdriver.chrome.driver", "lib//chromedriver.exe");
-		driver=new ChromeDriver();
-		driver.get(URL_LOGIN);
+		ChromeOptions options = new ChromeOptions();
+		options.addArguments("headless");
+		driver = new ChromeDriver(options);
+//		driver = new ChromeDriver();
+		driver.get(CommonLink.URL_LOGIN);
 		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+		driver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
 	}
 //	@After
 //	public void ClosePage() {

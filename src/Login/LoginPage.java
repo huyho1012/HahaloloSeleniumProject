@@ -17,8 +17,6 @@ public class LoginPage extends Connection{
 	@FindBy(css = "form#signin button[type=\"submit\"]")
 	WebElement btnLogin;
 
-	
-
 	public LoginPage(WebDriver driver){
 		this.driver= driver;
 		PageFactory.initElements(driver, this);

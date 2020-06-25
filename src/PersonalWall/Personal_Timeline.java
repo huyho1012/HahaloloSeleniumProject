@@ -31,7 +31,7 @@ public class Personal_Timeline extends Connection{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		driver.get(Connection.URL_PERSONAL);
+//		driver.get(Connection.URL_PERSONAL);
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
