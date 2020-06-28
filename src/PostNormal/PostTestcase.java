@@ -12,11 +12,11 @@ public class PostTestcase extends Connection {
 	LoginPage loginPage;
 	PostPage postPage;
 
-	public void CreatePost() {
-		loginPage = new LoginPage(driver);
-		loginPage.Login("balo_04@mailinator.com", "123456");
-		postPage = new PostPage(driver);
-		postPage.CreatePost(dum.RandomString(200));
-	}
+//	public void CreatePost() {
+//		loginPage = new LoginPage(driver);
+//		loginPage.Login("balo_04@mailinator.com", "123456");
+//		postPage = new PostPage(driver);
+//		postPage.CreatePost(dum.RandomString(200));
+//	}
 	
 }

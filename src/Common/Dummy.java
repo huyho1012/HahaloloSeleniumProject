@@ -21,7 +21,7 @@ public class Dummy {
 			int index = (int)(AlphaNumericString.length()*Math.random());
 			email = bd.append(AlphaNumericString.charAt(index)).toString();
 		}
-		return "huyho"+email+"@mailinator.com";
+		return email+"@mailinator.com";
 	}
 	public String DummyPass (int passLenght){
 		String password = "";
@@ -32,6 +32,16 @@ public class Dummy {
 			password = bd.append(AlphaNumericString.charAt(index)).toString();
 		}
 		return password;
+	}
+	public String DummyText(int chars) {
+		String text = null;
+		String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"+ "abcdefghijklmnopqrstuvxyz";
+		StringBuilder bd = new StringBuilder(chars);
+		for(int i =0 ; i< chars;i++) {
+			int index = (int)(AlphaNumericString.length()*Math.random());
+			text = bd.append(AlphaNumericString.charAt(index)).toString();
+		}
+		return text;
 	}
 
 }

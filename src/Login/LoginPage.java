@@ -16,7 +16,6 @@ public class LoginPage extends Connection{
 	WebElement passWord;
 	@FindBy(css = "form#signin button[type=\"submit\"]")
 	WebElement btnLogin;
-
 	public LoginPage(WebDriver driver){
 		this.driver= driver;
 		PageFactory.initElements(driver, this);
@@ -30,4 +29,5 @@ public class LoginPage extends Connection{
 		String message = driver.findElement(By.cssSelector(".help-block")).getText();
 		return message;
 	}
+
 }

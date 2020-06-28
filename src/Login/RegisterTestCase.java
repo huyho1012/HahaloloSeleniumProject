@@ -1,17 +1,18 @@
 package Login;
 
-import Common.CommonLink;
 import Common.Connection;
 import Common.Dummy;
 import Newsfeed.NewsfeedPage;
 import org.junit.Assert;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
 
 public class RegisterTestCase extends Connection {
     Dummy dummy = new Dummy();
     NewsfeedPage feed;
-    protected String ranDomEmail = dummy.RamdomVirtualMail();
+    protected String ranDomEmail = "huyho"+dummy.RamdomVirtualMail();
+    protected String email02 = "huy.ho.quoc"+dummy.RamdomVirtualMail();
+    protected String email01 = "huy-ho"+dummy.RamdomVirtualMail();
+    protected String email03 = "huy_ho"+dummy.RamdomVirtualMail();
     RegisterPage reg;
 
     @Test
@@ -176,21 +177,21 @@ public class RegisterTestCase extends Connection {
     @Test
     public void RegisterWithEmailContainsDashCharacter(){
         reg = new RegisterPage(driver);
-        reg.RegisterWithEmail("Huy","Hồ Doãn Quốc", "huyho-1210@mailinator.com", "123456", "123456");
+        reg.RegisterWithEmail("Huy","Hồ Doãn Quốc", email01, "123456", "123456");
         feed = new NewsfeedPage(driver);
         Assert.assertTrue(feed.checkNewsfeedDisplay());
     }
     @Test
     public void RegisterWithEmailContainsUnderlineCharacter(){
         reg = new RegisterPage(driver);
-        reg.RegisterWithEmail("Huy","Hồ Doãn Quốc", "huyho_1210@mailinator.com", "123456", "123456");
+        reg.RegisterWithEmail("Huy","Hồ Doãn Quốc", email03, "123456", "123456");
         feed = new NewsfeedPage(driver);
         Assert.assertTrue(feed.checkNewsfeedDisplay());
     }
     @Test
     public void RegisterWithEmailContainsMoreThan2DotsCharacter(){
         reg = new RegisterPage(driver);
-        reg.RegisterWithEmail("Huy","Hồ Doãn Quốc", "huyho.1210@mailinator.com", "123456", "123456");
+        reg.RegisterWithEmail("Huy","Hồ Doãn Quốc", email02, "123456", "123456");
         feed = new NewsfeedPage(driver);
         Assert.assertTrue(feed.checkNewsfeedDisplay());
     }

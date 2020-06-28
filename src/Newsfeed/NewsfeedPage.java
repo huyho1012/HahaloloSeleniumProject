@@ -24,9 +24,9 @@ public class NewsfeedPage extends Connection {
        this.driver = driver;
         PageFactory.initElements(driver,this);
     }
-    public boolean checkNewsfeedDisplay(){
-        if(tabNewsfeed.isDisplayed()) return true;
-        return false;
+    public boolean
+    checkNewsfeedDisplay(){
+        return tabNewsfeed.isDisplayed();
     }
 
 }
