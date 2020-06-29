@@ -3,13 +3,17 @@ package AccounSetting;
 import Login.LoginPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class AccountSettingPage {
     WebDriver driver;
-    Actions act;
+
+    String confirmPassWord;
+    String Fullname;
+    String fName;
+    String lName;
+    String midName;
     @FindBy (css = "div.topnav > div:nth-child(7) > div > span")
     WebElement menuHeaderSetting;
     @FindBy (css = "div.topnav > div:nth-child(7) > div > div > a:nth-child(8) > span:nth-child(2)")
@@ -30,14 +34,17 @@ public class AccountSettingPage {
     @FindBy (css = "#setting_general > div > div.list-group > div:nth-child(1) > form > div:nth-child(6) > button.btn.btn-primary")
     WebElement btnSaveChange;
 
-    @FindBy (name ="confirmPwd")
+    @FindBy (name= "confirmPwd")
     WebElement confirmPass;
-    @FindBy (id = "act-confirm-pwd")
-    WebElement btnConfirmPass;
+    @FindBy (id="act-confirm-pwd")
+            WebElement btnConfirmPass;
 
-    String fName ="";
-    String midName="";
-    String lName="";
+    public void ConfirmPassPopup(String confirmPassWord){
+        confirmPass.sendKeys(confirmPassWord);
+        btnConfirmPass.click();
+    }
+
+
     public AccountSettingPage( WebDriver driver){
         this.driver = driver;
         PageFactory.initElements(driver, this);
@@ -56,13 +63,12 @@ public class AccountSettingPage {
         menuLogout.click();
     }
     public void AcccounSetting(){
+
         LoginNewsfeed();
         menuHeaderSetting.click();
         accSet.click();
     }
 
-    public void formConfirmPass(String confirmPass){
-    }
     public void UpdateFullName(String first, String last, String middle){
         AcccounSetting();
         tabGeneral.click();
@@ -73,17 +79,18 @@ public class AccountSettingPage {
         middleName.sendKeys(middle);
         lastName.clear();
         lastName.sendKeys(last);
-        if(ValidateLenghtOfFullname()==false) {
-            btnSaveChange.click();
-            confirmPass.sendKeys("123456");
-            btnConfirmPass.click();
-        }
-        else {
-            btnSaveChange.click();}
+        btnSaveChange.click();
+        Fullname = GetFullName(first,last,middle);
+
     }
     public boolean ValidateLenghtOfFullname(){
-        int maxLengFullname = fName.length()+ fName.length() + midName.length();
+        int maxLengFullname = fName.length()+ lName.length() + midName.length();
         if(maxLengFullname>76) return false;
         return  true;
     }
+    public String GetFullName(String first, String last, String middle){
+        String fullName = last.trim()+" "+ middle.trim()+" "+first.trim();
+        return  fullName;
+    }
+
 }
