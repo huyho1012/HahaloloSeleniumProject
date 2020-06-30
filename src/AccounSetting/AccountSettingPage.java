@@ -1,16 +1,21 @@
 package AccounSetting;
 
 import Login.LoginPage;
+import Newsfeed.NewsfeedPage;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import java.lang.String;
+import java.util.StringTokenizer;
 
 public class AccountSettingPage {
     WebDriver driver;
-
+    int count;
+    int countWhitespace;
     String confirmPassWord;
-    String Fullname;
+    String fullName;
     String fName;
     String lName;
     String midName;
@@ -24,26 +29,32 @@ public class AccountSettingPage {
     @FindBy( css = "section#main-content a.nav-link.setting_general_nav")
     WebElement tabGeneral;
     @FindBy (css = "#setting_general > div > div.list-group > div:nth-child(1) > div > div.col-auto > button > i")
-    WebElement btnEditFullName;
+    WebElement btnUpdateFullName;
     @FindBy (name = "firstName")
-    WebElement firstName;
+    WebElement txtFirstName;
     @FindBy (name = "middleName")
-    WebElement middleName;
+    WebElement txtMidName;
     @FindBy (name = "lastName")
-    WebElement lastName;
-    @FindBy (css = "#setting_general > div > div.list-group > div:nth-child(1) > form > div:nth-child(6) > button.btn.btn-primary")
+    WebElement txtLastName;
+    @FindBy (css = "div#setting_general form > div:nth-child(6) > button[type=\"submit\"].btn.btn-primary")
     WebElement btnSaveChange;
 
     @FindBy (name= "confirmPwd")
     WebElement confirmPass;
     @FindBy (id="act-confirm-pwd")
-            WebElement btnConfirmPass;
+    WebElement btnConfirmPass;
+    @FindBy (css = "div#modalConfirmPw button[type=\"button\"].btn.btn-dark")
+    WebElement btnCancel;
 
+    // Hàm thực thị thao tác trong xác nhận mật khẩu
     public void ConfirmPassPopup(String confirmPassWord){
         confirmPass.sendKeys(confirmPassWord);
         btnConfirmPass.click();
     }
-
+    public boolean CheckDisplayConfirmPopup(){
+        if(!driver.findElement(By.cssSelector("div#modalConfirmPw div.modal-header.bg-faded-light.rounded-top.py-2 > span")).isDisplayed()) return true;
+            return false;
+    }
 
     public AccountSettingPage( WebDriver driver){
         this.driver = driver;
@@ -51,19 +62,20 @@ public class AccountSettingPage {
     }
     public void LoginNewsfeed(){
         LoginPage login = new LoginPage(driver);
+        NewsfeedPage newsfeed = new NewsfeedPage(driver);
         login.Login("balo_04@mailinator.com","123456");
         try {
-            Thread.sleep(3000);
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        newsfeed.ChangeLanguagetoVI();
     }
     public void LogoutPage(){
         menuHeaderSetting.click();
         menuLogout.click();
     }
     public void AcccounSetting(){
-
         LoginNewsfeed();
         menuHeaderSetting.click();
         accSet.click();
@@ -72,25 +84,68 @@ public class AccountSettingPage {
     public void UpdateFullName(String first, String last, String middle){
         AcccounSetting();
         tabGeneral.click();
-        btnEditFullName.click();
-        firstName.clear();
-        firstName.sendKeys(first);
-        middleName.clear();
-        middleName.sendKeys(middle);
-        lastName.clear();
-        lastName.sendKeys(last);
+        btnUpdateFullName.click();
+        txtFirstName.clear();
+        txtFirstName.sendKeys(first);
+        txtMidName.clear();
+        txtMidName.sendKeys(middle);
+        txtLastName.clear();
+        txtLastName.sendKeys(last);
         btnSaveChange.click();
-        Fullname = GetFullName(first,last,middle);
-
+        fullName = GetFullName(first,last,middle);
+        lName = last;
+        fName = first;
+        midName = middle;
     }
-    public boolean ValidateLenghtOfFullname(){
-        int maxLengFullname = fName.length()+ lName.length() + midName.length();
-        if(maxLengFullname>76) return false;
-        return  true;
+    public String ValidateLenghtOfFullname(){
+        String mesValidation = "";
+        int maxName = fullName.length();
+        if(maxName>76) {
+            return "The maxiumun limit of Full name is 75 characters";
+        }
+        return mesValidation;
+    }
+    public String ValidatecountWord(){
+        String mesValidation = "";
+        StringTokenizer tokens = new StringTokenizer(fullName);
+        int n =  tokens.countTokens();
+        if(n>=6){
+            return "Full name not great than 5 word.";
+        }
+        return mesValidation;
+    }
+    public String ValidationWhitespace(){
+        String mesValidation = "";
+        int whitespaceFirstName = countWhitespace(fName.trim());
+        int whitespaceLastName = countWhitespace(lName.trim());
+        int whitespaceMiddleName = countWhitespace(midName.trim());
+        if(whitespaceFirstName>=2) {
+            return "First name don't input great than 2 spaces.";
+        }
+        else if(whitespaceLastName>=2){
+            return "Last name don't input great than 2 spaces.";
+        }
+        else if(whitespaceMiddleName>=2){
+            return "Middle name don't input great than 2 spaces.";
+        }
+        return mesValidation;
+    }
+    public int countWhitespace(String content){
+        int countWhitespace = 0;
+        char chars;
+        int sizeName = content.length();
+        for(int i = 0; i < sizeName-1; i++) {
+            chars = content.charAt(i);
+            if(Character.isSpaceChar(chars))
+                countWhitespace ++;
+        }
+        return countWhitespace;
     }
     public String GetFullName(String first, String last, String middle){
-        String fullName = last.trim()+" "+ middle.trim()+" "+first.trim();
-        return  fullName;
+        return last.trim()+" "+ middle.trim()+" "+first.trim();
+    }
+    public String GetFullNameDisplayAfterUpdate(){
+        return  driver.findElement(By.cssSelector("div#setting_general div:nth-child(1) > div > div.col > div")).getText();
     }
 
 }

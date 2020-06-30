@@ -5,7 +5,6 @@ import Common.Dummy;
 import Login.LoginPage;
 import org.junit.Assert;
 import org.junit.Test;
-import org.openqa.selenium.By;
 
 public class GeneralAccountSetting extends Connection {
     AccountSettingPage setAcc;
@@ -15,116 +14,288 @@ public class GeneralAccountSetting extends Connection {
     @Test
     public void UpdateFullNameSuccessful() {
         setAcc = new AccountSettingPage(driver);
-        setAcc.UpdateFullName("Huy  " ,"Hồ  ", " Quốc Doãn ");
+        setAcc.UpdateFullName("Huy", "Hồ", " Quốc Doãn ");
         setAcc.ConfirmPassPopup("123456");
         try {
             Thread.sleep(8000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-      Assert.assertEquals(setAcc.Fullname,(driver.findElement(By.cssSelector("div#setting_general div:nth-child(1) > div > div.col > div")).getText()));
-        System.out.println("Kịnh");
+        Assert.assertEquals(setAcc.fullName, setAcc.GetFullNameDisplayAfterUpdate());
     }
+
+    // validation tổng số lượng ký tự và chữ
+    @Test
+    public void UpdateExcedLimtChar() {
+        setAcc = new AccountSettingPage(driver);
+        login = new LoginPage(driver);
+        setAcc.UpdateFullName(dummy.DummyText(70), "Hồ", "Doãn Quốc");
+        Assert.assertEquals(setAcc.ValidateLenghtOfFullname(), login.GetErrMessage());
+    }
+
+    @Test
+    public void UpdateWithLimitWord() {
+        setAcc = new AccountSettingPage(driver);
+        login = new LoginPage(driver);
+        setAcc.UpdateFullName("Hùng Huy", "Hồ Lý", "Doãn Quốc");
+        Assert.assertEquals(setAcc.ValidatecountWord(), login.GetErrMessage());
+    }
+
+    // Validation Tên
     @Test
     public void UpdateWithblankFirstName() {
         setAcc = new AccountSettingPage(driver);
-        setAcc.UpdateFullName("" ,"Hồ", "Doãn Quốc");
+        login = new LoginPage(driver);
+        setAcc.UpdateFullName("", "Hồ", "Doãn Quốc");
+        Assert.assertEquals("Tên là bắt buộc.", login.GetErrMessage());
     }
+
     @Test
-    public void UpdateWithFirstNameContainsWhitespace() {
+    public void UpdateWithFirstNameContainWhitespace() {
         setAcc = new AccountSettingPage(driver);
-        setAcc.UpdateFullName("Huy " ,"Hồ", "Doãn Quốc");
+        setAcc.UpdateFullName("Huy ", "Hồ", "Doãn Quốc");
+        try {
+            Thread.sleep(8000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Assert.assertEquals(setAcc.fullName, setAcc.GetFullNameDisplayAfterUpdate());
     }
+
     @Test
-    public void UpdateWithFirstNameContainsSpecialChar() {
-        setAcc = new AccountSettingPage(driver);
-        setAcc.UpdateFullName("Huy @@" ,"Hồ", "Doãn Quốc");
-    }
-    @Test
-    public void UpdateWithFirstNameContainsNumber() {
-        setAcc = new AccountSettingPage(driver);
-        setAcc.UpdateFullName("Huy 12" ,"Hồ", "Doãn Quốc");
-    }
-    @Test
-    public void UpdateWithFirstNameContainsScriptCode() {
-        setAcc = new AccountSettingPage(driver);
-        setAcc.UpdateFullName(dummy.SCRIPTCODE ,"Hồ", "Doãn Quốc");
-    }
-    @Test
-    public void UpdateWithFirstNameContainsHTML() {
-        setAcc = new AccountSettingPage(driver);
-        setAcc.UpdateFullName(dummy.HTMLCODE ,"Hồ", "Doãn Quốc");
-    }
-    @Test
-    public void UpdateExxcedLimtChar() {
+    public void UpdateWithFirstNameContainSpecialChar() {
         setAcc = new AccountSettingPage(driver);
         login = new LoginPage(driver);
-        setAcc.UpdateFullName( dummy.DummyText(75),"Hồ", "Doãn Quốc");
-        Assert.assertEquals("The maxiumun limit of Full name is 75 characters", login.GetErrMessage() );
-        System.out.println("hello");
+        setAcc.UpdateFullName("Huy @@", "Hồ", "Doãn Quốc");
+        Assert.assertEquals("Tên không chứa ký tự đặc biệt.", login.GetErrMessage());
     }
+
     @Test
-    public void UpdateWithNoMidleName(){
+    public void UpdateWithFirstNameContainNumber() {
+        setAcc = new AccountSettingPage(driver);
+        login = new LoginPage(driver);
+        setAcc.UpdateFullName("Huy 12", "Hồ", "Doãn Quốc");
+        Assert.assertEquals("Tên không chứa số.", login.GetErrMessage());
+    }
+
+    @Test
+    public void UpdateWithFirstNameContainScript() {
+        setAcc = new AccountSettingPage(driver);
+        login = new LoginPage(driver);
+        setAcc.UpdateFullName(dummy.SCRIPTCODE, "Hồ", "Doãn Quốc");
+        Assert.assertEquals("Tên không chứa ký tự đặc biệt.", login.GetErrMessage());
+    }
+
+    @Test
+    public void UpdateWithFirstNameContainHTML() {
+        setAcc = new AccountSettingPage(driver);
+        login = new LoginPage(driver);
+        setAcc.UpdateFullName(dummy.HTMLCODE, "Hồ", "Doãn Quốc");
+        Assert.assertEquals("Tên không chứa ký tự đặc biệt.", login.GetErrMessage());
+    }
+
+    @Test
+    public void UpdateWithFirstNameContainMoreWhiteSpaceonBetween() {
+        login = new LoginPage(driver);
+        setAcc = new AccountSettingPage(driver);
+        setAcc.UpdateFullName("Huy  Quốc", "Hồ", "Doãn Quốc");
+        Assert.assertEquals(setAcc.ValidationWhitespace(), login.GetErrMessage());
+    }
+
+    // Validation trường hợp tên lót
+    @Test
+    public void UpdateWithNoMidName() {
         setAcc = new AccountSettingPage(driver);
         setAcc.UpdateFullName("Huy", "Hồ", "");
+        try {
+            Thread.sleep(8000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Assert.assertEquals(setAcc.fullName, setAcc.GetFullNameDisplayAfterUpdate());
     }
+
     @Test
-    public void UpdateWithMidNameContainsWhiteSpace(){
+    public void UpdateWithMidNameContainWhiteSpace() {
         setAcc = new AccountSettingPage(driver);
         setAcc.UpdateFullName("Huy", "Hồ", " Doãn  Quốc  ");
+        try {
+            Thread.sleep(8000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Assert.assertEquals(setAcc.fullName, setAcc.GetFullNameDisplayAfterUpdate());
     }
+
     @Test
-    public void UpdateWithMidNameContainSpecialChar(){
+    public void UpdateWithMidNameContainNumberic() {
+        setAcc = new AccountSettingPage(driver);
+        login = new LoginPage(driver);
+        setAcc.UpdateFullName("Huy", "Hồ", "Doãn Quốc @");
+        Assert.assertEquals("Chữ lót không chứa số.", login.GetErrMessage());
     }
+
     @Test
-    public void UpdateWithMidNameContainNumberic(){
+    public void UpdateWithMidNameContainSpecialChar() {
+        setAcc = new AccountSettingPage(driver);
+        login = new LoginPage(driver);
+        setAcc.UpdateFullName("Huy", "Hồ", "Doãn Quốc @");
+        Assert.assertEquals("Chữ lót không chứa ký tự đặc biệt.", login.GetErrMessage());
     }
+
     @Test
     public void UpdateWithMidNameContainsScriptCode() {
         setAcc = new AccountSettingPage(driver);
-        setAcc.UpdateFullName(dummy.SCRIPTCODE ,"Hồ", "Doãn Quốc");
+        login = new LoginPage(driver);
+        setAcc.UpdateFullName(dummy.SCRIPTCODE, "Hồ", "Doãn Quốc");
+        Assert.assertEquals("Chữ lót không chứa ký tự đặc biệt.", login.GetErrMessage());
     }
+
     @Test
     public void UpdateWithMidNameContainsHTML() {
         setAcc = new AccountSettingPage(driver);
-        setAcc.UpdateFullName(dummy.HTMLCODE ,"Hồ", "Doãn Quốc");
+        login = new LoginPage(driver);
+        setAcc.UpdateFullName(dummy.HTMLCODE, "Hồ", "Doãn Quốc");
+        Assert.assertEquals("Chữ lót không chứa ký tự đặc biệt.", login.GetErrMessage());
     }
+
     @Test
-    public void UpdateWithLastnameBlank(){
+    public void UpdateWithMiddleNameContain2WhiteSpaceBetween() {
+        login = new LoginPage(driver);
+        setAcc = new AccountSettingPage(driver);
+        setAcc.UpdateFullName("Huy", "Hồ", "Doãn   Quốc");
+        Assert.assertEquals(setAcc.ValidationWhitespace(), login.GetErrMessage());
+    }
+
+    // Validation trường hợp họ
+    @Test
+    public void UpdateWithLastnameBlank() {
         setAcc = new AccountSettingPage(driver);
         setAcc.UpdateFullName("Huy", "", "Doãn Quốc");
+        Assert.assertEquals("Họ là bắt buộc.", login.GetErrMessage());
+    }
+
+    @Test
+    public void UpdateWithLastNameContain2WhiteSpaceBetween() {
+        login = new LoginPage(driver);
+        setAcc = new AccountSettingPage(driver);
+        setAcc.UpdateFullName("Huy", "Hồ  Thái", "Doãn Quốc");
+        Assert.assertEquals(setAcc.ValidationWhitespace(), login.GetErrMessage());
+    }
+
+    @Test
+    public void UpdateWithLastnameContainsMoreWhiteSpace() {
+        login = new LoginPage(driver);
+        setAcc = new AccountSettingPage(driver);
+        setAcc.UpdateFullName("Huy", " Hồ ", "Doãn Quốc");
+        try {
+            Thread.sleep(8000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Assert.assertEquals(setAcc.fullName, setAcc.GetFullNameDisplayAfterUpdate());
+    }
+
+    @Test
+    public void UpdateWithLastnameContainsNumberic() {
+        login = new LoginPage(driver);
+        setAcc = new AccountSettingPage(driver);
+        setAcc.UpdateFullName("Huy", "Hồ 123", "Doãn Quốc");
+        Assert.assertEquals("Họ không chứa số.", login.GetErrMessage());
+    }
+
+    @Test
+    public void UpdateWithLastnameContainScriptCode() {
+        login = new LoginPage(driver);
+        setAcc = new AccountSettingPage(driver);
+        setAcc.UpdateFullName("Huy", dummy.SCRIPTCODE, "Doãn Quốc");
+        Assert.assertEquals("Họ không chứa ký tự đặc biệt.", login.GetErrMessage());
+    }
+
+    @Test
+    public void UpdateWithLastnameContainSpeicalchar() {
+        login = new LoginPage(driver);
+        setAcc = new AccountSettingPage(driver);
+        setAcc.UpdateFullName("Huy", "huy @@@", "Doãn Quốc");
+        Assert.assertEquals("Họ không chứa ký tự đặc biệt.", login.GetErrMessage());
+    }
+
+    @Test
+    public void UpdateWithLastNameContainHTMLCode() {
+        login = new LoginPage(driver);
+        setAcc = new AccountSettingPage(driver);
+        setAcc.UpdateFullName("Huy", dummy.HTMLCODE, "Doãn Quốc");
+        Assert.assertEquals("Họ không chứa ký tự đặc biệt.", login.GetErrMessage());
     }
     @Test
-    public void UpdateWithLastnameContainsMoreWhiteSpace(){
+    public void makeConfirmPasswordBlank() {
+        login = new LoginPage(driver);
+        setAcc = new AccountSettingPage(driver);
+        setAcc.UpdateFullName("Huy", "Hồ", "Doãn Quốc");
+        setAcc.ConfirmPassPopup("");
+        Assert.assertEquals("Mật khẩu là bắt buộc.", login.GetErrMessage());
     }
     @Test
-    public void UpdateWithLastnameContainsNumberic(){
+    public void makeConfirmPasswordContainsWhitepace() {
+        login = new LoginPage(driver);
+        setAcc = new AccountSettingPage(driver);
+        setAcc.UpdateFullName("Huy", "Hồ", "Doãn Quốc");
+        setAcc.ConfirmPassPopup("123 456");
+        Assert.assertEquals("Thay đổi tên thất bại. Mật khẩu bạn nhập không chính xác", login.GetErrMessage());
     }
     @Test
-    public void UpdateWithLastnameContainsScriptCode(){
+    public void makeInvalidConfirmPass() {
+        login = new LoginPage(driver);
+        setAcc = new AccountSettingPage(driver);
+        setAcc.UpdateFullName("Huy", "Hồ", "Doãn Quốc");
+        setAcc.ConfirmPassPopup("123456a");
+        Assert.assertEquals("Thay đổi tên thất bại. Mật khẩu bạn nhập không chính xác", login.GetErrMessage());
     }
-    public void UpdateWithLastNameContainHTMLCode(){
+    @Test
+    public void makeConfirmPasswordLessThan2Char() {
+        login = new LoginPage(driver);
+        setAcc = new AccountSettingPage(driver);
+        setAcc.UpdateFullName("Huy", "Hồ", "Doãn Quốc");
+        setAcc.ConfirmPassPopup("12");
+        Assert.assertEquals("Giới hạn tối thiểu của Mật khẩu là 6 kí tự", login.GetErrMessage());
     }
-    public void makeConfirmPasswordBlank(){
+    @Test
+    public void makeConfirmPasswordExceedThan128Char() {
+        login = new LoginPage(driver);
+        setAcc = new AccountSettingPage(driver);
+        setAcc.UpdateFullName("Huy", "Hồ", "Doãn Quốc");
+        setAcc.ConfirmPassPopup(dummy.DummyPass(129));
+        Assert.assertEquals("Thay đổi tên thất bại. Mật khẩu bạn nhập không chính xác", login.GetErrMessage());
+    }
 
+    @Test
+    public void checkActionClickCancelButtonWhenUpdateName() {
+        login = new LoginPage(driver);
+        setAcc = new AccountSettingPage(driver);
+        setAcc.UpdateFullName("Huy", "Hồ", "Doãn Quốc");
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Assert.assertTrue(setAcc.CheckDisplayConfirmPopup());
+        setAcc.btnCancel.click();
+        System.out.println("đóng rồi");
     }
-    public void makeConfirmPasswordContainsWhitepace(){
 
-    }
-    public void makeInvalidConfirmPass(){
-
-    }
-    public void  makeConfirmPasswordLessThan2Char(){
-
-    }
-    public void makeConfirmPasswordExceedThan128Char(){
-
-    }
-    public void checkActionClickCancelButtonWhenUpdateName(){
-
-    }
-    public void checkActionClickCancelonConfirmPasswordPopup(){
-
+    @Test
+    public void checkActionClickCancelonConfirmPasswordPopup() {
+        login = new LoginPage(driver);
+        setAcc = new AccountSettingPage(driver);
+        setAcc.UpdateFullName("Huy", "Hồ", "Doãn Quốc");
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Assert.assertTrue(setAcc.CheckDisplayConfirmPopup());
+        setAcc.btnCancel.click();
+        System.out.println("đóng rồi");
     }
 
 
