@@ -13,10 +13,10 @@ public class Connection {
 	@Before
 	public void Connection() {
 		System.setProperty("webdriver.chrome.driver", "lib//chromedriver.exe");
-//		ChromeOptions options = new ChromeOptions();
-//		options.addArguments("headless");
-//		driver = new ChromeDriver(options);
-		driver = new ChromeDriver();
+		ChromeOptions options = new ChromeOptions();
+		options.addArguments("headless");
+		driver = new ChromeDriver(options);
+//		driver = new ChromeDriver();
 		driver.get(CommonLink.URL_LOGIN);
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
