@@ -12,9 +12,6 @@ import java.util.StringTokenizer;
 
 public class AccountSettingPage {
     WebDriver driver;
-    int count;
-    int countWhitespace;
-    String confirmPassWord;
     String fullName;
     String fName;
     String lName;
@@ -65,7 +62,7 @@ public class AccountSettingPage {
         NewsfeedPage newsfeed = new NewsfeedPage(driver);
         login.Login("balo_04@mailinator.com","123456");
         try {
-            Thread.sleep(10000);
+            Thread.sleep(15000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -93,6 +90,7 @@ public class AccountSettingPage {
         txtLastName.sendKeys(last);
         btnSaveChange.click();
         fullName = GetFullName(first,last,middle);
+
         lName = last;
         fName = first;
         midName = middle;
@@ -142,23 +140,27 @@ public class AccountSettingPage {
         return countWhitespace;
     }
     public String GetFullName(String first, String last, String middle){
-        if(last== null){
-            return middle.trim()+" "+first.trim();
+        last = last.trim();
+        middle = middle.trim();
+        first = first.trim();
+
+        if(last== ""){
+            return middle+" "+first;
         }
-        else if(first== null){
-            return last.trim()+" "+ middle.trim();
+        else if(first== ""){
+            return last+" "+ middle;
         }
-        else if(middle == null){
-            return last.trim()+" "+ first.trim();
+        else if(middle == ""){
+            return last+" "+ first;
         }
-        return  last.trim()+" "+ middle.trim()+ " " + first.trim();
+        return last.trim()+" "+ middle.trim()+ " " + first.trim();
 
     }
     public String GetFullNameDisplayAfterUpdate(){
         return  driver.findElement(By.cssSelector("div#setting_general div:nth-child(1) > div > div.col > div")).getText();
     }
     public String getErrConfirmMessage() {
-        String message = driver.findElement(By.cssSelector("#js-result")).getText();
+        String message = driver.findElement(By.id("js-result")).getText();
         return message;
     }
 

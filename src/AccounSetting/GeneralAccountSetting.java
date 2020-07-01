@@ -12,6 +12,12 @@ public class GeneralAccountSetting extends Connection {
     LoginPage login;
     Dummy dummy = new Dummy();
 
+//    @Test
+//    public void Logout(){
+//        setAcc = new AccountSettingPage(driver);
+//        setAcc.LoginNewsfeed();
+//        setAcc.LogoutPage();
+//    }
     @Test
     public void UpdateFullNameSuccessful() {
         setAcc = new AccountSettingPage(driver);
@@ -110,6 +116,18 @@ public class GeneralAccountSetting extends Connection {
     public void UpdateWithNoMidName() {
         setAcc = new AccountSettingPage(driver);
         setAcc.UpdateFullName("Huy", "Hồ", "");
+        setAcc.ConfirmPassPopup("123456");
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Assert.assertEquals(setAcc.fullName, setAcc.GetFullNameDisplayAfterUpdate());
+    }
+    @Test
+    public void UpdateWithMidNameWithInputFullWhitespace() {
+        setAcc = new AccountSettingPage(driver);
+        setAcc.UpdateFullName("Huy", "Hồ", "           ");
         setAcc.ConfirmPassPopup("123456");
         try {
             Thread.sleep(20000);
@@ -247,26 +265,22 @@ public class GeneralAccountSetting extends Connection {
         setAcc = new AccountSettingPage(driver);
         setAcc.UpdateFullName("Huy", "Hồ", "Doãn Quốc");
         setAcc.ConfirmPassPopup("123 456");
+        System.out.println(setAcc.getErrConfirmMessage());
         try {
             Thread.sleep(20000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println(setAcc.getErrConfirmMessage());
         Assert.assertEquals("Thay đổi tên thất bại. Mật khẩu bạn nhập không chính xác", setAcc.getErrConfirmMessage());
     }
     @Test
     public void makeInvalidConfirmPass() {
-        login = new LoginPage(driver);
+        int n = 0;
         setAcc = new AccountSettingPage(driver);
         setAcc.UpdateFullName("Huy", "Hồ", "Doãn Quốc");
         setAcc.ConfirmPassPopup("123456a");
-        try {
-            Thread.sleep(20000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Assert.assertEquals("Thay đổi tên thất bại. Mật khẩu bạn nhập không chính xác", setAcc.getErrConfirmMessage());
+        System.out.println(driver.findElement(By.cssSelector("p#js-result")).getText());
+
     }
     @Test
     public void makeConfirmPasswordLessThan2Char() {
@@ -319,7 +333,6 @@ public class GeneralAccountSetting extends Connection {
             e.printStackTrace();
         }
         Assert.assertTrue(setAcc.CheckDisplayConfirmPopup());
-        System.out.println("đóng rồi");
     }
 
 

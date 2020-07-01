@@ -40,12 +40,12 @@ public class NewsfeedPage extends Connection {
     }
     public void ChangeLanguagetoVI(){
         if (checkLanguageNF() == true) {
-            languageVI.click();
             try {
-                Thread.sleep(3000);
+                Thread.sleep(10000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            languageVI.click();
         }
     }
 }
