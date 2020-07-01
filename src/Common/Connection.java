@@ -1,5 +1,6 @@
 package Common;
 
+import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -18,10 +19,10 @@ public class Connection {
 		driver = new ChromeDriver();
 		driver.get(CommonLink.URL_LOGIN);
 		driver.manage().window().maximize();
-		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 	}
-//	@After
-//	public void ClosePage() {
-//		driver.close();
-//	}
+	@After
+	public void ClosePage() {
+		driver.close();
+	}
 }
