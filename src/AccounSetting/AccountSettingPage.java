@@ -101,7 +101,7 @@ public class AccountSettingPage {
         String mesValidation = "";
         int maxName = fullName.length();
         if(maxName>76) {
-            return "The maxiumun limit of Full name is 75 characters";
+            return "Giới hạn tối đa của Họ và tên là 75 kí tự";
         }
         return mesValidation;
     }
@@ -110,7 +110,7 @@ public class AccountSettingPage {
         StringTokenizer tokens = new StringTokenizer(fullName);
         int n =  tokens.countTokens();
         if(n>=6){
-            return "Full name not great than 5 word.";
+            return "Họ và tên không lớn hơn 5 từ.";
         }
         return mesValidation;
     }
@@ -120,13 +120,13 @@ public class AccountSettingPage {
         int whitespaceLastName = countWhitespace(lName.trim());
         int whitespaceMiddleName = countWhitespace(midName.trim());
         if(whitespaceFirstName>=2) {
-            return "First name don't input great than 2 spaces.";
+            return "Tên không được nhập quá 2 kí tự trắng.";
         }
         else if(whitespaceLastName>=2){
-            return "Last name don't input great than 2 spaces.";
+            return "Họ không được nhập quá 2 kí tự trắng.";
         }
         else if(whitespaceMiddleName>=2){
-            return "Middle name don't input great than 2 spaces.";
+            return "Chữ lót không được nhập quá 2 kí tự trắng.";
         }
         return mesValidation;
     }
@@ -142,10 +142,25 @@ public class AccountSettingPage {
         return countWhitespace;
     }
     public String GetFullName(String first, String last, String middle){
-        return last.trim()+" "+ middle.trim()+" "+first.trim();
+        if(last== null){
+            return middle.trim()+" "+first.trim();
+        }
+        else if(first== null){
+            return last.trim()+" "+ middle.trim();
+        }
+        else if(middle == null){
+            return last.trim()+" "+ first.trim();
+        }
+        return  last.trim()+" "+ middle.trim()+ " " + first.trim();
+
     }
     public String GetFullNameDisplayAfterUpdate(){
         return  driver.findElement(By.cssSelector("div#setting_general div:nth-child(1) > div > div.col > div")).getText();
     }
+    public String getErrConfirmMessage() {
+        String message = driver.findElement(By.cssSelector("#js-result")).getText();
+        return message;
+    }
+
 
 }
