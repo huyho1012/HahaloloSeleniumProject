@@ -38,7 +38,6 @@ public class AccountSettingPage {
     WebElement txtLastName;
     @FindBy (css = "div#setting_general form > div:nth-child(6) > button[type=\"submit\"].btn.btn-primary")
     WebElement btnSaveChange;
-
     @FindBy (name= "confirmPwd")
     WebElement confirmPass;
     @FindBy (id="act-confirm-pwd")

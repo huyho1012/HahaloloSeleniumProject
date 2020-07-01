@@ -56,11 +56,6 @@ public class GeneralAccountSetting extends Connection {
         setAcc = new AccountSettingPage(driver);
         setAcc.UpdateFullName("Huy ", "Hồ", "Doãn Quốc");
         setAcc.ConfirmPassPopup("123456");
-        try {
-            Thread.sleep(20000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         System.out.println(driver.findElement(By.cssSelector("div#setting_general div:nth-child(1) > div > div.col > div")).getText());
         Assert.assertEquals(setAcc.fullName, setAcc.GetFullNameDisplayAfterUpdate());
     }
